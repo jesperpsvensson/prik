@@ -121,13 +121,15 @@
       }
 
       function checkAnswer(answer) {
-
+        alert(rightsInRow);
         if (active = true) {
           if (randomNumber == answer) {
             if (rightsInRow == 0) {
               points = points + 10;
+
             } else if (rightsInRow == 1) {
               points = points + 20;
+
             } else {
               points = points + 30;
             }
