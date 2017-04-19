@@ -121,29 +121,6 @@
       }
 
       function checkAnswer(answer) {
-        alert(rightsInRow);
-        if (active = true) {
-          if (randomNumber == answer) {
-            if (rightsInRow == 0) {
-              points = points + 10;
-
-            } else if (rightsInRow == 1) {
-              points = points + 20;
-
-            } else {
-              points = points + 30;
-            }
-            rightsInRow = rightsInRow + 1;
-
-            $("#points").html(points.toString());
-            setDotts();
-            setButtons();
-          } else {
-            rightsInRow = 0;
-          }
-        }
-
-
 
         if (randomNumber == answer) {
           if (rightsInRow == 0) {
@@ -161,7 +138,6 @@
         } else {
           rightsInRow = 0;
         }
-
       }
 
       function startGame() {
@@ -179,6 +155,40 @@
         setDotts();
         setButtons();
         $("#timer").hide();
+      }
+
+      $("button").click(function() {
+        checkAnswer($(this).html());
+      });
+
+
+
+      function timer()
+      {
+        if (active == true) {
+          count=count-1;
+        }
+
+        if (count <= -1)
+        {
+          clearInterval(counter);
+          //counter ended, do something here
+          return;
+        }
+
+        //Do code for showing the number of seconds here
+        $("#timer").html(count);
+      }
+
+    function stopGame() {
+      location.reload();
+
+    }
+
+    </script>
+  </body>
+</html>
+   $("#timer").hide();
       }
 
       $("button").click(function() {
