@@ -121,6 +121,7 @@
       }
 
       function checkAnswer(answer) {
+<<<<<<< HEAD
         if (active = true) {
           if (randomNumber == answer) {
             if (rightsInRow == 0) {
@@ -140,6 +141,25 @@
           }
         }
 
+=======
+
+        if (randomNumber == answer) {
+          if (rightsInRow == 0) {
+            points = points + 10;
+          } else if (rightsInRow == 1) {
+            points = points + 20;
+          } else {
+            points = points + 30;
+          }
+          rightsInRow = rightsInRow + 1;
+
+          $("#points").html(points.toString());
+          setDotts();
+          setButtons();
+        } else {
+          rightsInRow = 0;
+        }
+>>>>>>> master
       }
 
       function startGame() {
@@ -174,7 +194,11 @@
         if (count <= -1)
         {
           clearInterval(counter);
+
           active = false;
+
+          //counter ended, do something here
+
           return;
         }
 
