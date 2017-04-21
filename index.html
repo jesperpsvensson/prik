@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,500" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>PRIK</title>
+  </head>
+  <body>
+    <div class="container text-center" id="startScreen">
+      <h1 id="title">PRIK</h1>
+      <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="startGame();">Vuxenläge</button></p>
+      <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="childMode();">Barnläge</button></p>
+      <p><button type="button" id="helpBtn"class="btn btn-link" data-toggle="modal" data-target="#myModal">Hjälp</button>
+</p>
+    </div>
+    <div class="container" id="gameScreen">
+
+      <div class="pointsDiv">
+        <p id="timer">30</p>
+        <p id="points" class="">0</p>
+      </div>
+    	<div class="dottContainer text-center">
+    	  <p id="dottP"style="">•••••••••</p>
+    	</div>
+      <div class="firstRow text-center">
+        <button id="1" class="">1</button>
+        <button id="2" class="">2</button>
+        <button id="3" class="">3</button>
+      </div>
+      <div class="firstRow text-center">
+        <button class="" id="4">4</button>
+        <button class="" id="5">5</button>
+        <button class="" id="6">6</button>
+      </div>
+      <div class="firstRow text-center">
+        <button class="" id="7">7</button>
+        <button class="" id="8">8</button>
+        <button class="" id="9">9</button>
+      </div>
+      <div class="text-center">
+        <button type="button" id="helpBtn"class="btn btn-link" onclick="stopGame();">Tillbaka</button>
+        <button type="button" id="helpBtn"class="btn btn-link" data-toggle="modal" data-target="#myModal">Hjälp</button>
+      </div>
+    </div>
+    <div class="container text-center" id="resultScreen">
+    	<h1 id="title">PRIK</h1>
+    	<p class="lead">Bra jobbat!</p>
+    	<h2 id="pointsSum"></h2>
+      <button class="btn btn-lg marginTop" name="button" onclick="startGame();">Starta ny omgång</button>
+      <div class="text-center">
+        <button type="button" id="helpBtn"class="btn btn-link" onclick="stopGame();">Tillbaka</button>
+        <button type="button" id="helpBtn"class="btn btn-link" data-toggle="modal" data-target="#myModal">Hjälp</button>
+      </div>
+
+    </div>
+    <div class="footer text-center marginTop">
+      <p class="small">© Jesper Svensson 2017</p>
+    </div>
+    <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">PRIK</h4>
+      </div>
+      <div class="modal-body">
+        <p>Räkna prickarna och välj rätt siffra. <br><br>Tappa inte koncentrationen ju fler rätt på rad ger mer poäng.</p><br>
+        <p>Speltid vuxenläge: 30 sekunder.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $("#startScreen").fadeIn(1000);
+
+      var points = 0;
+      var numbers = [1,2,3,4,5,6,7,8,9];
+      var rightsInRow = 0;
+      var count=30;
+       //1000 will  run it every 1 second
+      var active = false;
+
+      var dotts = ["•",
+                  "••",
+                  "•••",
+                  "••••",
+                  "•••••",
+                  "••••••",
+                  "•••••••",
+                  "••••••••",
+                  "•••••••••"];
+      var randomNumber = Math.floor(Math.random() * 9) + 1;
+
+      function setButtons() {
+        numbers.sort(function() { return 0.5 - Math.random() });
+        $("#1").html(numbers[0]);
+        $("#2").html(numbers[1]);
+        $("#3").html(numbers[2]);
+        $("#4").html(numbers[3]);
+        $("#5").html(numbers[4]);
+        $("#6").html(numbers[5]);
+        $("#7").html(numbers[6]);
+        $("#8").html(numbers[7]);
+        $("#9").html(numbers[8]);
+      }
+
+      function setDotts() {
+        randomNumber = Math.floor(Math.random() * 9) + 1;
+
+        $("#dottP").html(dotts[randomNumber-1]);
+      }
+
+      function checkAnswer(answer) {
+
+        if (randomNumber == answer && active == true) {
+          if (rightsInRow == 0) {
+            points = points + 10;
+          } else if (rightsInRow == 1) {
+            points = points + 20;
+          } else {
+            points = points + 30;
+          }
+          rightsInRow = rightsInRow + 1;
+
+          $("#points").html(points.toString());
+          setDotts();
+          setButtons();
+        } else {
+          rightsInRow = 0;
+        }
+      }
+
+      function startGame() {
+        $("#startScreen").hide();
+        $("#resultScreen").hide();
+        $("#gameScreen").fadeIn(1000);
+        setDotts();
+        setButtons();
+        points = 0;
+        count = 30;
+        $("#points").html(points.toString());
+        $("#timer").html(count);
+        active = true;
+        var counter=setInterval(timer, 1000);
+
+        function timer()
+        {
+          if (active == true) {
+            count=count-1;
+          }
+
+          if (count <= -1)
+          {
+            clearInterval(counter);
+            //counter ended, do something here
+            active = false;
+            $("#gameScreen").hide();
+            $("#pointsSum").html(points.toString() + " poäng");
+          	$("#resultScreen").fadeIn(1000);
+            return;
+          }
+
+          //Do code for showing the number of seconds here
+          $("#timer").html(count);
+        }
+      }
+
+      function childMode() {
+        $("#startScreen").hide();
+        $("#gameScreen").fadeIn(1000);
+        setDotts();
+        setButtons();
+        $("#timer").hide();
+      }
+
+      $("button").click(function() {
+        checkAnswer($(this).html());
+      });
+
+
+
+    function stopGame() {
+      location.reload();
+
+    }
+
+    </script>
+  </body>
+</html>
