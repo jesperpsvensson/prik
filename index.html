@@ -51,9 +51,10 @@
       </div>
     </div>
     <div class="container text-center" id="resultScreen">
-    	<h1 id="title">PRIK</h1>
-    	<p class="lead">Bra jobbat!</p>
+    	<h1 id="title">Bra jobbat!</h1>
     	<h2 id="pointsSum"></h2>
+      <p id="timePerRight" class="marginTop"></p>
+      <p id="rightStreak"></p>
       <button class="btn btn-lg marginTop" name="button" onclick="startGame();">Starta ny omgång</button>
       <div class="text-center">
         <button type="button" id="helpBtn"class="btn btn-link" onclick="stopGame();">Tillbaka</button>
@@ -100,6 +101,9 @@
       var count=30;
        //1000 will  run it every 1 second
       var active = false;
+      var rights = 0;
+      var streak = 0;
+      var bestStreak = 0;
 
       var dotts = ["•",
                   "••",
@@ -126,9 +130,11 @@
       }
 
       function setDotts() {
+
         randomNumber = Math.floor(Math.random() * 9) + 1;
 
         $("#dottP").html(dotts[randomNumber-1]);
+        $("#dottP").fadeIn(400);
       }
 
       function checkAnswer(answer) {
@@ -142,11 +148,16 @@
             points = points + 30;
           }
           rightsInRow = rightsInRow + 1;
+          rights = rights + 1;
 
           $("#points").html(points.toString());
           setDotts();
           setButtons();
         } else {
+          if (rightsInRow > bestStreak) {
+            bestStreak = rightsInRow;
+          }
+
           rightsInRow = 0;
         }
       }
@@ -159,6 +170,9 @@
         setButtons();
         points = 0;
         count = 30;
+        streak = 0;
+        bestStreak = 0;
+        rights = 0;
         $("#points").html(points.toString());
         $("#timer").html(count);
         active = true;
@@ -175,7 +189,13 @@
             clearInterval(counter);
             //counter ended, do something here
             active = false;
+            if (bestStreak == 0) {
+              bestStreak = rightsInRow;
+            }
             $("#gameScreen").hide();
+            var timePerRight = 30 / rights;
+            $("#timePerRight").html("Sekund per rätt svar: " + timePerRight.toFixed(2));
+            $("#rightStreak").html("Flest rätt i rad: " + bestStreak);
             $("#pointsSum").html(points.toString() + " poäng");
           	$("#resultScreen").fadeIn(1000);
             return;
