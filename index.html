@@ -16,8 +16,9 @@
   <body>
     <div class="container text-center" id="startScreen">
       <h1 id="title">PRIK</h1>
-      <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="startGame();">Starta nytt spel</button></p>
+      <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="startGame();">Starta utmaning</button></p>
       <!-- <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="childMode();">Barnläge</button></p> -->
+      <p><button class="btn btn-lg marginTop modeBtn" name="button" onclick="startKidsGame();">Starta träning</button></p>
       <p><button type="button" id="helpBtn"class="btn btn-link" data-toggle="modal" data-target="#myModal">Hjälp</button>
 </p>
     </div>
@@ -170,6 +171,50 @@
         setButtons();
         points = 0;
         count = 30;
+        streak = 0;
+        bestStreak = 0;
+        rights = 0;
+        $("#points").html(points.toString());
+        $("#timer").html(count);
+        active = true;
+        var counter=setInterval(timer, 1000);
+
+        function timer()
+        {
+          if (active == true) {
+            count=count-1;
+          }
+
+          if (count <= -1)
+          {
+            clearInterval(counter);
+            //counter ended, do something here
+            active = false;
+            if (bestStreak == 0) {
+              bestStreak = rightsInRow;
+            }
+            $("#gameScreen").hide();
+            var timePerRight = 30 / rights;
+            $("#timePerRight").html("Sekunder per rätt svar: " + timePerRight.toFixed(2));
+            $("#rightStreak").html("Flest rätt i rad: " + bestStreak);
+            $("#pointsSum").html(points.toString() + " poäng");
+          	$("#resultScreen").fadeIn(1000);
+            return;
+          }
+
+          //Do code for showing the number of seconds here
+          $("#timer").html(count);
+        }
+      }
+
+      function startKidsGame() {
+        $("#startScreen").hide();
+        $("#resultScreen").hide();
+        $("#gameScreen").fadeIn(1000);
+        setDotts();
+        setButtons();
+        points = 0;
+        count = 300;
         streak = 0;
         bestStreak = 0;
         rights = 0;
